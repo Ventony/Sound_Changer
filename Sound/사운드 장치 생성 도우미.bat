@@ -3,6 +3,18 @@ chcp 65001 > nul
 setlocal enabledelayedexpansion
 cls
 
+:: 관리자 권한 체크
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo 관리자 권한이 필요합니다. UAC 권한 상승을 시도합니다...
+    powershell -Command "Start-Process '%~f0' -Verb runAs"
+    exit /b
+)
+
+echo 관리자 권한으로 실행 중입니다.
+timeout /t 1 > nul
+cls
+
 :: ------------------------------------------------------------
 
 :: 속성 창 열기
